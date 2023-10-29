@@ -23,8 +23,7 @@ jobs:
 
       - name: Install Scalingo CLI
         run: |
-          curl -O https://cli-dl.scalingo.io/install
-          sh ./install
+          curl -O https://cli-dl.scalingo.com/install && bash install
 
       - name: Login to Scalingo
         run: |
