@@ -1,0 +1,27 @@
+name: GitHub Actions Demo
+
+on: 
+  push:
+    branches: [develop]
+
+jobs:
+  build_docker:
+    name: Build Docker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install docker.io
+          sudo usermod -aG docker $USER
+          newgrp docker
+          docker --version
+
+      - name: Build Docker image
+        run: docker build -t my-image-name .
+
+      - name: Run Docker container
+        run: docker run -d my-image-name
