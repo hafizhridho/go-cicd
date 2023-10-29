@@ -19,9 +19,3 @@ jobs:
           sudo usermod -aG docker $USER
           newgrp docker
           docker --version
-
-      - name: Build Docker image
-        run: docker build -t my-image-name .
-
-      - name: Run Docker container
-        run: docker run -d my-image-name
