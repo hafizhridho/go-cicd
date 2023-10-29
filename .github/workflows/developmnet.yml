@@ -1,9 +1,9 @@
-name: Deploy to Scalingo
+name: Deploy to Railway
 
 on:
   push:
     branches:
-      - main  # Sesuaikan dengan cabang Anda
+      - main
 
 jobs:
   deploy:
@@ -18,16 +18,16 @@ jobs:
         with:
           go-version: 1.21.2
 
-      - name: Build
-        run: go build -o myapp
-
-      - name: Install Scalingo CLI
+      - name: Install Railway CLI
         run: |
-          curl -o scalingo https://cli-dl.scalingo.io/install && chmod +x scalingo
-          sudo mv scalingo /usr/local/bin/
+          curl -o railway https://railway.app/install.sh && chmod +x railway
+          sudo mv railway /usr/local/bin/
 
-      - name: Login to Scalingo
-        run: scalingo login --token $SCALINGO_API_TOKEN scalingo@example.com
-
-      - name: Deploy to Scalingo
-        run: scalingo -a myapp deploy
+      - name: Deploy to Railway
+        run: |
+          railway login --api-token $RAILWAY_API_TOKEN
+          railway link $RAILWAY_PROJECT_ID
+          railway up
+        env:
+          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
+          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
