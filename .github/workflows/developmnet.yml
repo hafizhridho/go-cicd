@@ -27,7 +27,7 @@ jobs:
           sudo mv scalingo /usr/local/bin/
 
       - name: Login to Scalingo
-        run: scalingo login $SCALINGO_API_TOKEN scalingo@example.com
+        run: scalingo login --token $SCALINGO_API_TOKEN scalingo@example.com
 
       - name: Deploy to Scalingo
         run: scalingo -a myapp deploy
