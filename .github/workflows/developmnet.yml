@@ -23,12 +23,11 @@ jobs:
 
       - name: Install Scalingo CLI
         run: |
-          curl -O https://cli-dl.scalingo.com/install && bash install
-
+          curl -o scalingo https://cli-dl.scalingo.io/install && chmod +x scalingo
+          sudo mv scalingo /usr/local/bin/
 
       - name: Login to Scalingo
-        run: |
-          scalingo login $SCALINGO_API_TOKEN scalingo@example.com
+        run: scalingo login $SCALINGO_API_TOKEN scalingo@example.com
 
       - name: Deploy to Scalingo
         run: scalingo -a myapp deploy
