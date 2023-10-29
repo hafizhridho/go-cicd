@@ -16,12 +16,19 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.21  # Sesuaikan dengan versi Go Anda
+          go-version: 1.17  # Sesuaikan dengan versi Go Anda
 
-      - name: Build and Deploy
+      - name: Build
+        run: go build -o myapp
+
+      - name: Install Scalingo CLI
         run: |
-          go build -o myapp
-          curl -O https://cli-dl.scalingo.io/install && sh ./install
-          scalingo login $SCALINGO_API_TOKEN scalingo@example.com
-          scalingo -a myapp deploy
+          curl -O https://cli-dl.scalingo.io/install
+          sh ./install
 
+      - name: Login to Scalingo
+        run: |
+          scalingo login $SCALINGO_API_TOKEN scalingo@example.com
+
+      - name: Deploy to Scalingo
+        run: scalingo -a myapp deploy
