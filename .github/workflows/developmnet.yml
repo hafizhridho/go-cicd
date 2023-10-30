@@ -1,4 +1,4 @@
-name: Deploy to Railway
+name: Docker Build and Publish
 
 on:
   push:
@@ -6,28 +6,15 @@ on:
       - main
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: 1.21.2
+      - name: Build Docker image
+        run: docker build -t my-docker-image .
 
-      - name: Install Railway CLI
-        run: |
-          curl -o railway https://railway.app/install.sh && chmod +x railway
-          sudo mv railway /usr/local/bin/
-
-      - name: Deploy to Railway
-        run: |
-          railway login --api-token $RAILWAY_API_TOKEN
-          railway link $RAILWAY_PROJECT_ID
-          railway up
-        env:
-          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
-          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
+      - name: Push Docker image
+        run: docker push my-docker-image
