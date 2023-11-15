@@ -1,23 +1,28 @@
-name: Docker Build and Publish
+name: Build and Run Docker
 
 on:
   push:
     branches:
-      - main # Atur sesuai dengan branch yang Anda inginkan
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Login to Docker Hub
-        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.17
 
-      - name: Build Docker image
-        run: docker build -t my-docker-image .
+      - name: Build Go Application
+        run: go build -o myapp .
 
-      - name: Push Docker image
-        run: docker push my-docker-image
+      - name: Build Docker Image
+        run: docker build -t myapp .
+
+      - name: Run Docker Container
+        run: docker run myapp
