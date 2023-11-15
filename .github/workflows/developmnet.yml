@@ -6,23 +6,12 @@ on:
       - main
 
 jobs:
-  build:
+  build_docker:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Go
-        uses: actions/setup-go@v3
-        with:
-          go-version: 1.21
-
-      - name: Build Go Application
-        run: go build -o myapp .
-
-      - name: Build Docker Image
-        run: docker build -t myapp .
-
-      - name: Run Docker Container
-        run: docker run myapp
+      - name: Build Docker
+        run: docker build -t your_image_name .
