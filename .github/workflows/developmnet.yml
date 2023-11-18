@@ -1,17 +1,25 @@
-name: Build and Run Docker
+name: Deploy to Railway Dev Environment
 
-on:
+on: 
   push:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
-  build_docker:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
 
-      - name: Build Docker
-        run: docker build -t hafizhridho/go-cicd:1.1.0 .
+      - name: Install Golang
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.17
+
+      - name: Build and Deploy
+        run: go run deploy.go
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_DEV_TOKEN }}
